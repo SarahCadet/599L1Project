@@ -1,0 +1,69 @@
+Introduction
+	- TODO: Brief introduction to Fine-grained complexity and reductions
+	- Introduction to subset sum, KSAT, paper
+	- TODO: Paper Roadmap
+
+PROBLEM INTRO SCENE
+--------------------------------------------------
+Voiceover:
+In this video we explore a fine grained reduction between the classic computer science problems: subset sum and KSAT
+First, let's define the versions of these problems we will be using:
+
+Scene:
+	Subset Sum and k-SAT
+
+--------------------------------------------------
+
+SUBSET SUM DEFINITION SCENE
+--------------------------------------------------
+Scene:
+Subset Sum:
+	Given n integers x1, x2, ... x_n in Z+ and a target value T in Z+, determine whether there is a subset of the numbers that sums to T
+
+Voiceover:
+(Read Text)
+--------------------------------------------------
+
+
+k-SAT DEFINITION SCENE
+--------------------------------------------------
+
+Mini scene:
+	k-CNF formula:
+	(clause) and (clause) and (clause)
+	(x1 or x3 or x4) and (x2 or x1 or x3) 
+	(x1 or not x3 or x4) and (not x2 or x1 or x3) 
+
+Voiceover:
+	(Gradually read as text and animation are shown) For k-SAT we need to know what a k-CNF equation is. A k-CNF equation is a conjunction of clauses, where each clause has k terms that are orred together. And each term is a boolean variable that can be negated. 
+
+
+Main Scene:
+	k-SAT:  Given a k-CNF formula with n variables and m clauses, decide whether it is satisfiable. 
+	x1 = False
+	x2 = False
+	x3 = False
+	x4 = False
+
+	So going back to our equation (x1 or not x3 or x4) and (not x2 or x1 or x3) 
+	Plug into: (True or not False or False) and (not False or True or True) 
+	(False or True or False) and (True or False or False) 
+	(True) and (True) 
+
+Voicover:
+(Read Definition). Here satisfiability refers to determine whether or not we can assign a True/False value to each variable so that after evaluating the equation with these assignments, it evaluates to True
+Going back to our example from before. One satisfiable assignment would be setting all variables to False. Plugging in these values, we can see that the equation then evaluates to True
+--------------------------------------------------
+
+
+SURPRISING CONNECTION SCENE
+--------------------------------------------------
+Scene:
+	Picture of main researchers:
+	Paper:
+	"SETH-Based lower bounds for subset sum and Bicriteria Path"
+
+Voiceover:
+At first glance, these two problems seem pretty different. Subset sum is based on arithmetic logic, while k-SAT is a problem that uses boolean logic. And it turns out, they are pretty different, and require a really creative set of reductions. Brilliant researchers x, y, z, in 2021 published a paper "SETH-Based lower bounds for subset sum and Bicriteria Path". That featured a reduction that we will be reporting on. They use a lot of brilliant insights and lemmas for the proof. For the sake of time we can not go over every single detail (the paper is definitely worth checking out) but we will go over the main steps.
+--------------------------------------------------
+
