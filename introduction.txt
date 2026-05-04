@@ -1,13 +1,26 @@
 Introduction
-	- TODO: Brief introduction to Fine-grained complexity and reductions
+	- Brief introduction to Fine-grained complexity and reductions
 	- Introduction to subset sum, KSAT, paper
-	- TODO: Paper Roadmap
+	- Paper Roadmap
+
+FINE GRAINED COMPLEXITY
+--------------------------------------------------
+Scene:
+Fine Grained Complexity:
+	Assumption: Problem A requires at least X time to solve
+	Show: Problem A can be solved with problem B
+	Conclusions: Then problem B must take at least X time
+
+	Reducing problem A to problem B: Reduction
+
+Voiceover: Fine grained complexity is a relatively recent field that has to do with how much we can actually optimize algorithms. The idea is to start with a classic, well-studied problem A for which we believe the best possible running time is already known. Then, we take another problem B (the one we are interested in) and show how to solve A using B. This is called a reduction from A to B. If we can show this reduction of A to B, then this implies B is at least as hard as A. More specifically, that B will take at least X time to solve. Otherwise a faster algorithm for B would give us a faster algorithm for A. Although fine-grained reductions can involve technical details about precise time bounds, the core idea is to transfer hardness, lower bounds on running time, between A and B
+--------------------------------------------------
 
 PROBLEM INTRO SCENE
 --------------------------------------------------
 Voiceover:
-In this video we explore a fine grained reduction between the classic computer science problems: subset sum and KSAT
-First, let's define the versions of these problems we will be using:
+In this video we explore a fine grained reduction between two of the most classic computer science problems: subset sum and KSAT. Even though reductions from k-SAT to subset sum are classical, going back to early NP-completeness proofs, modern research has established a tight fine grained reduction. 
+But first, let's define the versions of these problems we will be using:
 
 Scene:
 	Subset Sum and k-SAT
@@ -35,7 +48,7 @@ Mini scene:
 	(x1 or not x3 or x4) and (not x2 or x1 or x3) 
 
 Voiceover:
-	(Gradually read as text and animation are shown) For k-SAT we need to know what a k-CNF equation is. A k-CNF equation is a conjunction of clauses, where each clause has k terms that are orred together. And each term is a boolean variable that can be negated. 
+	(Gradually read as text and animation are shown) For k-SAT we need to know what a k-CNF formula is. A k-CNF formula is a conjunction of clauses, where each clause has k terms that are orred together. And each term is a boolean variable or its negation. 
 
 
 Main Scene:
@@ -50,8 +63,8 @@ Main Scene:
 	(False or True or False) and (True or False or False) 
 	(True) and (True) 
 
-Voicover:
-(Read Definition). Here satisfiability refers to determine whether or not we can assign a True/False value to each variable so that after evaluating the equation with these assignments, it evaluates to True
+Voiceover:
+(Read Definition). Here satisfiability refers to whether or not we can assign a True/False value to each variable so that after evaluating the equation with these assignments, it evaluates to True
 Going back to our example from before. One satisfiable assignment would be setting all variables to False. Plugging in these values, we can see that the equation then evaluates to True
 --------------------------------------------------
 
@@ -64,6 +77,28 @@ Scene:
 	"SETH-Based lower bounds for subset sum and Bicriteria Path"
 
 Voiceover:
-At first glance, these two problems seem pretty different. Subset sum is based on arithmetic logic, while k-SAT is a problem that uses boolean logic. And it turns out, they are pretty different, and require a really creative set of reductions. Brilliant researchers x, y, z, in 2021 published a paper "SETH-Based lower bounds for subset sum and Bicriteria Path". That featured a reduction that we will be reporting on. They use a lot of brilliant insights and lemmas for the proof. For the sake of time we can not go over every single detail (the paper is definitely worth checking out) but we will go over the main steps.
+At first glance, these two problems seem pretty different: Subset sum is based on arithmetic logic, while k-SAT is a problem that uses boolean logic. And it turns out, these problems are pretty different, and require a really creative set of reductions to connect. This video is based on the work of brilliant researchers x, y, z, who in 2021 published a paper "SETH-Based lower bounds for subset sum and Bicriteria Path". They use a lot of creative yet challenging insights and lemmas for the proof. For the sake of time we can not go over every single technical detail but we will go over the main parts. For all of the specific technical details you can check out the link to the paper in the description.
 --------------------------------------------------
+
+ASSUMPTION
+--------------------------------------------------
+Scene:
+Strong Exponential Time Hypothesis (SETH): k-SAT does not have an algorithm that runs in O(2^(1-epsilon)n) time for any constant epsilon > 0, 
+
+Voiceover:
+(Read Definition). Reducing k-SAT to subset sum under SETH, means that subset sum can not be solved in time 2^(1-epislon)n under SETH. 
+--------------------------------------------------
+
+PAPER ROADMAP SCENE
+--------------------------------------------------
+Scene:
+	k-SAT -> Structured CSP -> Subset Sum 
+
+Voiceover:
+For a high level overview, there are two reductions k-SAT to Structured CSP (which we will define shortly) and Structured CSP to Subset Sum. The intuition is that we need to define some sort of structure about k-SAT that makes it easier to work with for defining properties and lemmas, which we will be then use to reduce to subset sum. With this in mind, let's begin.
+--------------------------------------------------
+
+
+
+
 
