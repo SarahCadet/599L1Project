@@ -1,0 +1,288 @@
+STRUCTURED CSP RECAP 
+--------------------------------------------------
+Scene: mainly text
+Structured CSP Instance ψ
+
+# Variables: n̂ = ⌈n / a⌉  
+Variable Domain: [2ᵃ]  
+# Constraints: m̂ = n̂  
+
+Properties:
+• Each variable appears in ≤ ĉₖ,ε · a constraints  
+• Each constraint contains ≤ ĉₖ,ε · a variables  
+
+Voiceover:
+Before reducing to Subset Sum, recall the structured CSP produced from k-SAT.
+
+Each CSP variable no longer represents a single Boolean variable.  
+Instead, each variable represents a **block of a original SAT variables**, giving it 2ᵃ possible values.
+
+The sparsification and grouping lemmas guarantee strong structure:
+
+every variable participates in at most  ĉₖ,ε · a constraints,  
+and every constraint uses at most ĉₖ,ε · a variables.
+
+--------------------------------------------------
+
+
+
+CORE IDEA 
+--------------------------------------------------
+Scene: 
+CSP v  →  Subset Sum (Z, T)
+
+Z = set of integers  
+T = target value  
+
+
+Assignments → Numbers; 
+    show examples of var assigment to number like x = 8 -> 11 y = 9 -> 12
+Assignment Consistency → Addition
+
+Goal:
+Subset sums to T <-> CSP is satisfiable
+
+Voiceover:
+We'll focus on a single CSP instance v.
+
+Remember that only one CSP instance among the ones created in the previous step needs to be satisfiable for k-SAT to be satisfiable.
+
+So we independently convert each CSP into a Subset Sum instance.
+
+If any Subset Sum instance has a solution, the original formula is satisfiable.
+
+We have the input numbers of Subset Sum represent setting variables to certain values
+
+Then we design a target sum T so that reaching T is only possible when all chosen assignments are globally consistent and satisfy every constraint.
+
+--------------------------------------------------
+
+
+
+DESCRIBING THE INTEGER ITEMS 
+--------------------------------------------------
+Scene:
+Integer Types
+
+Variable Items:
+    z(x, alpha) <- notation
+    z(x_1, 4) -> x_1 = 4
+    x_1 = 4  x_1 = 5   <- x_1 type
+    x_2 = 2  x_2 = 3   <- x_2 type
+Constraint Items:
+    z(c, alpha1, alpha2, ...) <- notation
+    z(c_1, 1, 2)
+    c_1 = (x_1 != x_2)     <- c_1 type
+    c_2 = (x_1 = 5 -> x_2 = 3)  <- c_2 type
+
+Voiceover:
+We can classify the input integers we'll create for Subset Sum as Variable Items 
+and Constraint Items.
+
+Variable Items represent assigning a variable to a certain value. 
+For every possible assignment of a variable, there is an associated Variable Item.
+
+Distinct variables have their own type. For example, x_1 assignment integers are a 
+different type from x_2 assignment integers.
+
+Constraint Items represent an assignment of variables that satisfy a constraint. 
+There is a Constraint Item for every satisfiable assignment of variables of a constraint. 
+
+Similar to Variable Items, distinct constraints have their own type.
+
+
+ENSURING ONE ITEM PER TYPE 
+--------------------------------------------------
+Scene:
+x_1 = 4  x_1 = 5                X sign over them after about 2 seconds
+c_1 = (1, 2)  c_1 = (2, 1)      X sign over them after about 2 seconds
+
+after the voice over show the empty blocks one by one:
+___|_____|_____|_____   
+
+Voiceover:
+It wouldn't make sense for two x_i assignments to be chosen or two c1 
+constraint assignments to be chosen at the same time. 
+
+Therefore, we need to make sure that any correct solution 
+picks exactly one item of each type. 
+
+To do this, we need to add structure to the integers we create. 
+We can do this by defining bit-blocks within both the input integers and the target T
+
+
+SELECTING THE CORRECT AMOUNT OF ITEMS
+--------------------------------------------------
+Scene: // highlight the first section; moving highlight as the sections are discussed
+x = 4 -> ___|_____|_____|_____  (set block one to 1)
+c_1 = (1,2) -> ___|_____|_____|_____  (set block one to 1)
+
+T -> ___|_____|_____|_____ (set block one to n + m 10 seconds after)  
+
+
+Voiceover:
+We'll start this encoding process from the higher order bits.
+
+The first block consists of O(logn) bits that represent the number of items chosen.
+For a given variable or constraint item this block would simply be 1.
+
+Within T, this block is equal to n + m, to ensure the correct amount of items are chosen.
+
+
+PADDING BITS
+--------------------------------------------------
+Scene: // highlight the second section; moving highlight as the sections are discussed
+x_1 = 4 -> 1|_____|_____|_____  (set block two to 0)
+c_1 = (1,2) -> 1|_____|_____|_____  (set block two to 0)
+
+T -> n + m|_____|_____|_____ (set block two to 0 )  
+
+Voiceover:
+The second block consists of O(logn) bits that serve as padding to avoid overflow
+causing a false positive.
+
+ONE OF EACH TYPE BITS
+--------------------------------------------------
+Scene: // highlight the third section; moving highlight as the sections are discussed
+x_1 = 4 -> 1|0|_____|_____  (set block three to 1 in a specific spot)
+c_1 = (1,2) -> 1|0|_____|_____  (set block three to 1 in a specific spot)
+
+T -> n + m|0|_____|_____ (set block two to all 1s)  
+
+Voiceover:
+The third block contains n + m bits. Each position in this block corresponds to a variable or clause type. 
+An input integer would only have 1 1-bit in this block; 
+an integer of type variable x1 for example will have a 1 in the x1 position and 0s in all other positions
+The target number will have all 1s in this block to ensure only 1 assignment for each variable and clause
+
+
+
+
+
+PADDING BITS
+--------------------------------------------------
+Scene: // highlight the fourth section; moving highlight as the sections are discussed
+x = 4 -> 1|0|100....|_____  (set block four to 0)
+c_1 = (1,2) -> 1|0|0010..|_____  (set block four to 0)
+
+T -> n + m|0|1... (n+m times)|_____ (set block four to 0 )  
+
+Voiceover:
+The fourth block consists of O(logn) bits that serve as padding again.
+
+With these four blocks we are able to ensure that the correct number of items are selected and 
+only one of each type of integer is selected.
+
+However to avoid assignment contradictions between variable and constraint items, 
+we'll need to add a blocks for each variable.
+
+
+
+VARIABLE BLOCKS 
+--------------------------------------------------
+Scene: // highlight the n block
+x = 4 -> 1|0|100....|0| ||*n  
+c_1 = (1,2) -> 1|0|0010..|0| ||*n  
+
+T -> n + m|0|1... (n+m times)|0| ||*n
+
+(appears after Q announced)
+Q 
+
+if variable item:
+    n block -> Q - d(x)*alpha
+
+if constraint item:
+    n block ->  alpha_i
+
+
+
+Voiceover:
+
+Each variable block represents assignment consistency for that variable. 
+
+A solution subset needs to sum to some value for this block that we'll call Q for now. 
+So, T has Q in each instance of a variable block. We'll revisit the amount of bits in these blocks.
+
+Let's set for each variable item, the block corresponding to that variable to be 
+Q - d(x)*alpha where d(x) is the number of constraints that contain the variable 
+and alpha is the value that the variable was assigned.
+
+If it's a constraint item that uses the variable, then we'll set the block to be 
+the value that it sets the variable as alpha_i. If the constraint doesn't use the variable,
+then the block will be 0.
+
+CONSISTENCY 
+--------------------------------------------------
+Scene:
+
+Q - d(x)*alpha + sum from i=1 to d(x) alpha_i
+
+k-Average-Free Set S
+
+Definition:
+No k numbers in S have an average in S  
+unless all chosen numbers are identical.
+
+Voiceover:
+The sum of a set of chosen items would be Q - d(x)*alpha + sum from i=1 to d(x) alpha_i.
+For the value to match up with the target block, d(x)*alpha would need to equal 
+sum from i=1 to d(x) alpha_i. However, this equality could be achieved with values alpha_i 
+that are not equal to the variable's alpha.
+
+This is why the paper introduces k-average-free sets. 
+A k-average-free set S guarantees that the average of a selection of k numbers 
+from S is not present in S. And that the sum of k values in S can only equal 
+a multiple of another value in S if all of the values chosen from S are equal.
+
+
+
+We can map our assignment values to an average-free set. 
+Let lambda be ĉₖ,ε · a and be the max amount of constraints that a given variable could be in.
+
+Let S be a lamda-average-free set.
+
+Let f be a mapping function from alpha_i to an element in S.
+
+
+
+CONSISTENCY  Part 2
+--------------------------------------------------
+
+Scene:
+Q - d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = Q
+
+- d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = 0
+
+ d(x)*f(alpha) = sum from i=1 to d(x) f(alpha_i) 
+
+Voiceover:
+Now we can rewrite the function as ...
+
+Now, because of the average-free set, the equation will only be true if all values 
+in the sum is equal to alpha; which shows consistency across items.  
+
+
+
+FINAL CORRECTNESS 
+--------------------------------------------------
+Scene:
+Checklist:  // fades in one by one
+
+✓ one assignment per variable  
+✓ one satisfying assignment per clause  
+✓ global consistency  
+
+Subset Sum solution ⇔ CSP satisfiable
+
+Voiceover:
+As a sanity check lets run through a checklist.
+
+A subset sum solver would work on CSP iff:
+
+we choose exactly one assignment per variable,  
+each clause is satisfied,  
+and all choices agree globally.
+
+Thus we obtain an equivalent Subset Sum instance.
+--------------------------------------------------
