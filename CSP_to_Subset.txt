@@ -329,16 +329,31 @@ for each variable without worrying about overflowing into other blocks.
 
 
 
-FINAL CORRECTNESS 
+FINAL CORRECTNESS and Time Complexity
 --------------------------------------------------
 Scene:
 Checklist:  // fades in one by one
 
-✓ one assignment per variable  
+✓ one assignment per variable  // the check marks appear as discussed
 ✓ one satisfying assignment per clause  
 ✓ global consistency  
 
-Subset Sum solution ⇔ CSP satisfiable
+Subset Sum solution <-> CSP satisfiable
+
+Time complexity:
+    logT = O(logn) + n + m + n*(logB + loglambda + O(1)) bits
+        = (1+e)n + Ok,e(nloga/a) bits
+        <= (1+2e)n
+    logT <= (1+2e)n
+
+    # Variable items = nhat*2^a <= n*2^a
+    # Constraint items = mhat*2^{alambda} <= n*2^{alambda} 
+
+    #Item construction time for 2^{en} subset sum instances
+      2^{en} * O(n^2*2^a + n^2*2^{alambda}) = 
+       2^{en} * O(n^2*2^{alambda}) =
+        poly(n)2^{en}
+    
 
 Voiceover:
 As a sanity check lets run through a checklist.
@@ -350,4 +365,16 @@ each clause is satisfied,
 and all choices agree globally.
 
 Thus we obtain an equivalent Subset Sum instance.
+
+Each integer has O(logn) + n + m + n*(logB + loglambda + O(1)) bits, which can be simplified to 
+    .... and has an upper bound of (1+2e)n
+    
+There are n variables and 2^a possible assignments:
+        n*2^a
+There are m constraints and at most lambda variables present in each:
+    mhat*2^{alambda} which has an upperbound of n*2^{alambda} 
+
+Therefore this reduction from CSP to Subset Sum:
+... which can be reduced to poly(n) 2^{en}
+
 --------------------------------------------------
