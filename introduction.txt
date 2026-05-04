@@ -3,7 +3,7 @@ Introduction
 	- Introduction to subset sum, KSAT, paper
 	- Paper Roadmap
 
-FINE GRAINED COMPLEXITY
+(SKIP) FINE GRAINED COMPLEXITY
 --------------------------------------------------
 Scene:
 Fine Grained Complexity:
@@ -19,11 +19,11 @@ Voiceover: Fine grained complexity is a relatively recent field that has to do w
 PROBLEM INTRO SCENE
 --------------------------------------------------
 Voiceover:
-In this video we explore a fine grained reduction between two of the most classic computer science problems: subset sum and KSAT. Even though reductions from k-SAT to subset sum are classical, going back to early NP-completeness proofs, modern research has established a tight fine grained reduction. 
-But first, let's define the versions of these problems we will be using:
+In this video we explore a fine grained reduction between two of the most classic computer science problems: k-sat and subset sum. Even though reductions from k-SAT to subset sum are well-studied, going back to early NP-completeness proofs, modern research has established a tight fine grained reduction. 
+Let's first define the versions of these problems we will be using:
 
 Scene:
-	Subset Sum and k-SAT
+	k-SAT <=fg B
 
 --------------------------------------------------
 
@@ -31,7 +31,7 @@ SUBSET SUM DEFINITION SCENE
 --------------------------------------------------
 Scene:
 Subset Sum:
-	Given n integers x1, x2, ... x_n in Z+ and a target value T in Z+, determine whether there is a subset of the numbers that sums to T
+	Given n integers x1, x2, ... x_n in N and a target value T in N, determine whether there is a subset of the numbers that sums to T
 
 Voiceover:
 (Read Text)
@@ -95,9 +95,8 @@ Scene:
 	k-SAT -> Structured CSP -> Subset Sum 
 
 Voiceover:
-For a high level overview, there are two reductions k-SAT to Structured CSP (which we will define shortly) and Structured CSP to Subset Sum. The intuition is that we need to define some sort of structure about k-SAT that makes it easier to work with for defining properties and lemmas, which we will be then use to reduce to subset sum. With this in mind, let's begin.
+For a high level overview, there are two reductions k-SAT to Structured CSP (which we will define shortly) and Structured CSP to Subset Sum. The intuition is that we need to define some sort of structure about k-SAT that makes it easier to work with for defining properties and lemmas, which we will then use to reduce to subset sum. With this in mind, let's begin.
 --------------------------------------------------
-
 
 
 

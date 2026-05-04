@@ -1,0 +1,104 @@
+Transition:
+k-SAT -> Structured CSP -> Subset Sum 
+k-SAT -> Structured CSP (IN BLUE) -> Subset Sum
+
+WHAT IS CSP
+--------------------------------------------------
+Scene:
+Constraint Satisfaction Problem (CSP):
+	N Variables x1, x2 ... xn
+	Domain of variables, Z or {Sarah, Manny}
+	Constraints
+
+	Can we assign a value from the domain to each variable to satisfy all constraints?
+
+Mini Scene:
+Variables:
+x in Z and Y in Z
+Constraints
+x + y = 5
+Yes x = 1, y = 4
+
+Voiceover:
+A constraint satisfaction problem (CSP) is a more generalized version of k-SAT, so we still have n variables
+But rather than booleans, these variables can take any value from any arbitrary domain of our choosing
+
+For example these numbers could be integers, or be from a set {Sarah, Manny}.
+
+Then we define some constraints that these variables need to satisfy. 
+Can we have an assignment to all variables that satisfies the constraints
+
+(READ MINI SCENE)
+--------------------------------------------------
+
+HIGH LEVEL OVERVIEW
+--------------------------------------------------
+Scene:
+Big box of k-SAT split into many smaller CSP boxes labelled psi
+
+Voiceover:
+With that in mind, let's start the first reduction. As usual with challenging problems, it is often easier to reason abouts organized subproblems rather than trying to solve a big challenging problem. So try to take our instance of k-SAT, and transform it into a bunch of easier to reason about problems.
+--------------------------------------------------
+
+SPARSIFICATION LEMMA
+--------------------------------------------------
+Scene:
+	(x1 or not x3 or x4) and (not x2 or x1 or x3) 
+	->
+	(x1) or ((not x3 or x4) and (not x2 or x3)) Highlight both CNF in blue
+
+Voiceover:
+We start by using the sparsification lemma. This tells us that any k-SAT formula can be rewritten as a disjunction of at most 2^epsilon n sparse k-SAT formulas. Sparse meaning that each variable only appears a constant amount of times c_k,e. Here epsilon is a small constant that represents a tiny exponential overhead. This transformation requires poly(n)2^epsilon n time.
+
+For example, our CNF formula from before can be rewritten as a disjunction (orring) of two CNFs like shown. Where each blue part is a sparse CNF. 
+--------------------------------------------------
+
+CSP VARIABLES VISUAL
+--------------------------------------------------
+Scene:
+Start with original scene with one kSAT -> CSP boxes
+
+k-SAT green, then one box is green
+k-SAT red, then all boxes are red
+Zoom in on one CSP box
+
+CSP:
+Variables: blocks of size a of sparse k-SAT variables
+
+k-SAT problem with 10 variables x1, x2...xn 
+Red, Green, Blue highlight of variables
+y1, y2, y3 all colored correspondingly
+
+Domain: binary strings of length a
+y2 represents x5, x6, x7, x8
+y2 = 0011
+
+Voiceover:
+Each of our CSPs will correspond to solving a sparse CNF term. Note that since we perform a disjunction over all instances, if the k-SAT formula is satisfiable, at least one instance of CSP will be satisfiable. And if the formula is not satisfiable, then none of the instances of CSP will be satisfiable.
+As a reminder our CSP needs variables that have a domain and constraints we need to satisfy. Our variables for CSP will represents blocks of variables of some parameter size a >= 1 in our k-SAT. For demonstration purposes, let's say there are 10 variables in our k-SAT formula, and a = 4. Then our CSP variables, y1, y2, y3 will represent these blocks of variables. For example, y2 represents the block x5, x6, x7, x8
+
+Since each x variable is a boolean which can be represented with a bit, we can encode every super variable y as a binary string of length a. 
+
+For example y2 = 0011, corresponds to x5 and x6 being false and x7 and x8 being true
+
+To recap our size,
+psi_i has n hat variables = ceil(n/a), that are over a domain 2^a
+--------------------------------------------------
+
+(TODO) CSP CONSTRAINTS
+--------------------------------------------------
+Voiceover:
+For the constraints of our CSP, we'll do a similar partitioning into super-constraints. It's important to note that rather than clauses over singular variables, these clauses now represent the corresponding bit in the super variable being set. 
+
+First we partition our clauses into blocks of size a, like we did for the variables. But then we combine these constraints into groups of size gamma (which we will go over into more detail shortly). 
+--------------------------------------------------
+
+(TODO) CSP MATH OVERVIEW
+--------------------------------------------------
+Voiceover:
+So what was the point in reframing our k-SAT into an exponential amount of structured CSP problems that represent sparse CNF formulas? The benefit is that it lets us analyze the problem's complexity more cleanly using known tools and results.
+
+Since we group variables into blocks of size a, each variable is only part of a * C_k, e clauses. We label this gamma, which is what we use to determine the size of our super constraints. 
+--------------------------------------------------
+
+
