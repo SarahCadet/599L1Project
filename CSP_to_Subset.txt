@@ -224,6 +224,9 @@ Definition:
 No k numbers in S have an average in S  
 unless all chosen numbers are identical.
 
+lamda = ĉₖ,ε · a
+
+
 Voiceover:
 The sum of a set of chosen items would be Q - d(x)*alpha + sum from i=1 to d(x) alpha_i.
 For the value to match up with the target block, d(x)*alpha would need to equal 
@@ -261,6 +264,68 @@ Now we can rewrite the function as ...
 
 Now, because of the average-free set, the equation will only be true if all values 
 in the sum is equal to alpha; which shows consistency across items.  
+
+
+T VARIABLE BLOCK value
+--------------------------------------------------
+Scene:
+lamda-average-free set 
+Size = 2^a
+B = lambda^{c/e}{2^a}^{1 + e}
+
+Subtraction term:
+Q - d(x)*f(alpha)
+
+Q = d(x)*f(alpha)
+lambda = max possible d(x)
+
+Q = lambdaB
+
+Voiceover:
+Lemma 3.2 in the paper states that a lamda-average-free set S of size 2^a,
+ values in f(alpha) will be bounded between [0, lambda^{c/e}{2^a}^{1 + e}]
+in poly(n) time.
+
+Let's have B be the max value in the set S.
+We need the variable block at any point in addition to be non-negative; however variable
+items involves subtraction terms. We need Q to be equal to the max value possible of 
+d(x)*f(alpha). 
+
+We know that the maximum value possible for d(x) is lambda and the max value possible 
+for f(alpha) is B.
+
+Therefore the max possible value of d(x)*f(alpha) is lambda B.
+So each variable block in T will be lambdaB.
+
+This avoids negative values.
+
+
+VARIABLE BLOCK size
+--------------------------------------------------
+Scene:
+
+Addition term:
+sum from i=1 to d(x) f(alpha_i)
+
+Max possible value:
+Q + sum from i=1 to d(x) f(alpha_i)
+Q + lambdaB
+lambdaB + lambdaB
+2lambdaB
+
+range: [0, 2lambdaB]
+block size: ceil(log(2lambdaB + 1))
+
+Voiceover:
+Now, what should each variable block's size be.
+
+Well with the addition terms throughout constraint items, our max value possible within a 
+variable block would be ... (let the equations play through) 2lambdaB.
+
+To represent the range [0,2lambdaB], each variable block needs to be of size ceil(log(2lambdaB + 1))
+
+With these variable blocks, we'll be able to check consistency of an assignment 
+for each variable without worrying about overflowing into other blocks.
 
 
 
