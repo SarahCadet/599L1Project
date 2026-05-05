@@ -47,7 +47,7 @@ We'll focus on a single CSP instance v.
 
 Remember that only one CSP instance among the ones created in the previous step needs to be satisfiable for k-SAT to be satisfiable.
 
-So we independently convert each CSP into a Subset Sum instance.
+So we'll independently convert each CSP into a Subset Sum instance and
 
 If any Subset Sum instance has a solution, the original formula is satisfiable.
 
@@ -202,7 +202,7 @@ Voiceover:
 Each variable block represents assignment consistency for that variable. 
 
 A solution subset needs to sum to some value for this block that we'll call Q for now. 
-So, T has Q in each instance of a variable block. We'll revisit the amount of bits in these blocks.
+So, T has Q in each instance of a variable block. We'll revisit the amount of bits in these blocks later.
 
 Let's set for each variable item, the block corresponding to that variable to be 
 Q - d(x)*alpha where d(x) is the number of constraints that contain the variable 
@@ -226,6 +226,11 @@ unless all chosen numbers are identical.
 
 lamda = ĉₖ,ε · a
 
+Q - d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = Q
+
+- d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = 0
+
+ d(x)*f(alpha) = sum from i=1 to d(x) f(alpha_i) 
 
 Voiceover:
 The sum of a set of chosen items would be Q - d(x)*alpha + sum from i=1 to d(x) alpha_i.
@@ -247,19 +252,6 @@ Let S be a lamda-average-free set.
 
 Let f be a mapping function from alpha_i to an element in S.
 
-
-
-CONSISTENCY  Part 2
---------------------------------------------------
-
-Scene:
-Q - d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = Q
-
-- d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = 0
-
- d(x)*f(alpha) = sum from i=1 to d(x) f(alpha_i) 
-
-Voiceover:
 Now we can rewrite the function as ...
 
 Now, because of the average-free set, the equation will only be true if all values 
