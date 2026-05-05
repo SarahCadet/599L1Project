@@ -23,7 +23,7 @@ class Intro0(Scene):
         text = MathTex(r"\text{k-SAT} \leq_{fg} \text{Subset Sum}", font_size=50, color=WHITE)
         self.play(Write(text), run_time = .8)
 
-        self.wait(3)
+        self.wait(10)
 
 # subset sum def
 class Intro1(Scene):
@@ -51,7 +51,7 @@ class Intro1(Scene):
         self.play(Write(part1), run_time=2)
         self.play(Write(part2), run_time=2)
 
-        self.wait(4)
+        self.wait(10)
 
 # k-sat def
 class Intro2_0(Scene):
@@ -65,7 +65,7 @@ class Intro2_0(Scene):
         )
 
         self.play(Write(definition))
-        self.wait(3)
+        self.wait(10)
 
 # k-cnf def
 class Intro2_1(Scene):
@@ -105,7 +105,7 @@ class Intro2_1(Scene):
         ).move_to(base)
 
         self.play(Transform(base, full))
-        self.wait(3)
+        self.wait(10)
 
 # k-cnf satisfiability
 class Intro2_2(Scene):
@@ -130,7 +130,7 @@ class Intro2_2(Scene):
         ).move_to(ORIGIN)
 
         self.play(Write(formula))
-        self.wait(1)
+        self.wait(10)
 
         assignments = VGroup(
             Tex(r"$x_1 = \text{False}$", font_size = sz*.8),
@@ -203,7 +203,7 @@ class Intro3_0(Scene):
         self.play(Write(text2))
         self.play(Write(text3))
         self.play(Indicate(text3))
-        self.wait(2)
+        self.wait(10)
 
 # paper
 class Intro3_1(Scene):
@@ -221,7 +221,7 @@ class Intro3_1(Scene):
 
         self.play(FadeIn(paper, shift=LEFT))
         self.play(Write(caption))
-        self.wait(5)
+        self.wait(10)
 
 # seth
 class Intro3_2(Scene):
@@ -252,7 +252,7 @@ class Intro3_2(Scene):
         ).next_to(statement, DOWN, buff=0.7)
 
         self.play(Write(consequence))
-        self.wait(3)
+        self.wait(10)
 
 class Intro4(Scene):
     def construct(self):
@@ -285,4 +285,4 @@ class Intro4(Scene):
             csp.animate.set_color(YELLOW)
         )
 
-        self.wait(2)
+        self.wait(10)
