@@ -13,6 +13,8 @@ Render a single section on its own, e.g.:
 
 from manim import *
 
+# ChatGPT Produced the colors
+
 # ── Colour palette ────────────────────────────────────────────────────────────
 C_BG     = "#0f1117"
 C_ACCENT = "#4fc3f7"   # light blue  – highlights / titles
@@ -27,7 +29,7 @@ config.background_color = C_BG
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Shared helpers (pure functions, no Scene dependency)
+# ChatGPT produced: Shared helpers (pure functions, no Scene dependency)
 # ─────────────────────────────────────────────────────────────────────────────
 
 def make_block(label: str, width=1.4, height=0.7,
@@ -67,14 +69,14 @@ def sec_title(text: str) -> Tex:
 
 class Scene01_CSPRecap(Scene):
     def construct(self):
-        title = sec_title("Structured CSP Recap")
+        title = sec_title("CSP Structure of Instance")
         self.play(Write(title))
         # Box with recap
         box = RoundedRectangle(width=7.5, height=4.5, corner_radius=0.2,
                                stroke_color=C_ACCENT, fill_color=C_ACCENT,
                                fill_opacity=0.06).shift(DOWN * 0.3)
         # One instance of CSP
-        psi = Tex(r"Structured CSP Instance $\psi$", font_size=28, color=C_ACCENT)
+        psi = Tex(r"CSP Instance $\psi$", font_size=28, color=C_ACCENT)
         #move the label to be right above the box
         psi.next_to(box, UP, buff=0.05)
         #rows within the box
@@ -87,11 +89,14 @@ class Scene01_CSPRecap(Scene):
             Tex(r"Each constraint uses $\leq \hat{c}_{k,\varepsilon}\cdot a$ variables",
                 font_size=26, color=C_PURPLE),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.3).move_to(box) # arrange them as a list and set them to be on top of the blue box
+
+
         self.play(FadeIn(box), Write(psi))
+        self.wait(5)
+
         for row in rows:
             self.play(FadeIn(row, shift=RIGHT * 0.15), run_time=0.55)
-            self.wait(2)
-        self.wait(2)
+            self.wait(5)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 
@@ -99,7 +104,7 @@ class Scene02_CoreIdea(Scene):
     def construct(self):
         title = sec_title("Core Idea")
         self.play(Write(title))
-
+        self.wait(4)
         #CSP
         csp_box = RoundedRectangle(width=3, height=1.2, corner_radius=0.15,
                                    stroke_color=C_ORANGE, fill_color=C_ORANGE,
@@ -122,7 +127,7 @@ class Scene02_CoreIdea(Scene):
         self.play(GrowArrow(arrow))
         self.play(FadeIn(ss, shift=RIGHT * 0.2))
 
-        self.wait(3)
+        self.wait(12)
 
         examples = VGroup(
             Tex(r"$x = 8\;\mapsto\;11$", font_size=24, color=C_ORANGE),
@@ -140,7 +145,7 @@ class Scene02_CoreIdea(Scene):
 
         for p in principles:
             self.play(FadeIn(p, shift=UP * 0.08), run_time=0.6)
-            self.wait(2)
+            self.wait(3)
     
         self.wait(2)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
@@ -188,14 +193,24 @@ class Scene03_ItemTypes(Scene):
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.22).next_to(con_notation, DOWN, buff=0.6)
 
 
-        self.play(Write(var_title), Write(con_title))
-        self.play(FadeIn(var_notation), FadeIn(con_notation))
-        for v, c in zip(var_ex, con_ex):
-            self.play(FadeIn(v, shift=RIGHT * 0.1), FadeIn(c, shift=LEFT * 0.1),
-                      run_time=0.45)
-            self.wait(1)
-
+        self.play(Write(var_title))
         self.wait(2)
+
+        for v in var_ex:
+            self.play(FadeIn(v, shift=RIGHT * 0.1),
+                      run_time=0.45)
+            self.wait(2)
+
+        self.play(Write(con_title))
+        self.wait(2)
+
+        for c in con_ex:
+            self.play(FadeIn(c, shift=LEFT * 0.1),
+                      run_time=0.45)
+            self.wait(2)
+
+        self.play(FadeIn(var_notation), FadeIn(con_notation))
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 
@@ -204,7 +219,7 @@ class Scene04_OnePerType(Scene):
 
         title = sec_title("Ensuring One Item Per Type")
         self.play(Write(title))
-        self.wait(2)
+        self.wait(1)
 
         var_group = VGroup(
             Tex(r"$x_1 = 4$", font_size=30, color=C_ORANGE),
@@ -215,8 +230,15 @@ class Scene04_OnePerType(Scene):
             Tex(r"$c_1 = (1,2)$", font_size=30, color=C_PURPLE),
             Tex(r"$c_1 = (2,1)$", font_size=30, color=C_PURPLE),
         ).arrange(RIGHT, buff=1.5).shift(UP * 0.1)
+        
+        for v in var_group:
+            self.play(FadeIn(v))
+            self.wait(0.5)
+        
+        for c in con_group:
+            self.play(FadeIn(c))
+            self.wait(0.5)
 
-        self.play(FadeIn(var_group), FadeIn(con_group))
         self.wait(2)
 
         def big_cross(mob):
@@ -244,7 +266,7 @@ class Scene04_OnePerType(Scene):
             self.play(FadeIn(blk), run_time=0.2)
             self.wait(0.5)
 
-        self.wait(2)
+        self.wait(3)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 
@@ -369,7 +391,7 @@ class Scene05_Blocks(Scene):
         self.play(FadeIn(brace))
         self.wait(0.1)
         self.play(Write(brace_label))
-        self.wait(2)
+        self.wait(4)
 
         vi_b3 = make_block("1[0]*(n-1)", width=1.6, height=0.65, fill_color=C_ACCENT, font_size=19).move_to(vi_row[2])
         ci_b3 = make_block("01[0]*(n-2)", width=1.6, height=0.65, fill_color=C_ACCENT, font_size=19).move_to(ci_row[2])
@@ -388,7 +410,7 @@ class Scene05_Blocks(Scene):
             Transform(ci_row[2], ci_b3),
             Transform(T_row[2], T_b3)
         )
-        self.wait(2)
+        self.wait(5)
         #block 4
 
         block_four_title = sec_title("Block 4 — More Padding!")
@@ -418,7 +440,7 @@ class Scene05_Blocks(Scene):
             Transform(ci_row[3], ci_b4),
             Transform(T_row[3], T_b4)
         )
-        self.wait(2)
+        self.wait(10)
 
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
@@ -452,7 +474,7 @@ class Scene06_VariableBlocks(Scene):
         Q_def = Tex(r"$Q$ = target value for each variable block in $T$",
                     font_size=25, color=C_GOLD).shift(UP * 0.25)
         self.play(Write(Q_def))
-        self.wait(2)
+        self.wait(6)
 
 
         rule_1 = Tex(
@@ -491,14 +513,14 @@ class Scene06_VariableBlocks(Scene):
 
         for r in rules:
             self.play(FadeIn(r, shift=RIGHT * 0.1), run_time=0.65)
-            self.wait(3)
+            self.wait(11)
         
         sum_eq = MathTex(
             r"\text{Block sum} = Q - d(x)\cdot \alpha) + \sum_{i=1}^{d(x)} \alpha_i",
             font_size=24, color=C_GREEN).shift(DOWN * 2.5)
         
         self.play(Write(sum_eq))
-        self.wait(2.5)
+        self.wait(5)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 
@@ -537,7 +559,7 @@ class Scene07_AverageFree(Scene):
             font_size=28).next_to(arrow_lbl, DOWN, buff=1)
         
         self.play(Write(definition))
-        self.wait(2)
+        self.wait(6)
 
         
         lam = Tex(r"$\lambda = \hat{c}_{k,\varepsilon}\cdot a$ = max constraints per variable",
@@ -547,22 +569,22 @@ class Scene07_AverageFree(Scene):
         
 
         self.play(Write(lam))
-        self.wait(1)
+        self.wait(8)
         self.play(Write(f_map))
-        self.wait(3) 
+        self.wait(8) 
 
         ## now we can rewrite the formula as :
         sum_eq_w_f = MathTex(
             r"d(x)\cdot f(\alpha) = \sum_{i=1}^{d(x)} f(\alpha_i)",
             font_size=30, color=C_GREEN).shift(UP * 2.2)
         self.play(Transform(sum_eq, sum_eq_w_f))
-        self.wait(3)
+        self.wait(7)
                 
         result = Tex(r"$f(\alpha_i) = f(\alpha)$ for all $i$ -- \textbf{consistency!}",
                      font_size=28, color=C_GREEN).next_to(arrow_lbl, DOWN, buff=1)
         
         self.play(Transform(definition, result))
-        self.wait(4)
+        self.wait(5)
 
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
@@ -578,7 +600,7 @@ class Scene08_QAndBlockSize(Scene):
             r"\lambda^{c/\varepsilon}(2^a)^{1+\varepsilon}$",
             font_size=25, color=WHITE).shift(UP * 2.0)
         self.play(Write(B_def))
-        self.wait(3)
+        self.wait(12)
 
         q_steps = VGroup(
             Tex(r"Block values must stay $\geq 0$", font_size=25, color=C_PURPLE),
@@ -588,9 +610,9 @@ class Scene08_QAndBlockSize(Scene):
         ).arrange(DOWN, buff=0.38).shift(UP * 0.2)
         for s in q_steps:
             self.play(FadeIn(s, shift=RIGHT * 0.1), run_time=0.6)
-            self.wait(5)
+            self.wait(9)
 
-        
+        self.wait(2)
         bs_steps = VGroup(
             Tex(r"Max block value $= Q + \lambda B = 2\lambda B$",
                 font_size=25, color=C_PURPLE),
@@ -598,10 +620,11 @@ class Scene08_QAndBlockSize(Scene):
             MathTex(r"\text{Block size} = \lceil\log(2\lambda B+1)\rceil \text{ bits}",
                     font_size=30, color=C_GOLD),
         ).arrange(DOWN, buff=0.35).shift(DOWN * 1.9)
+        
         for s in bs_steps:
             self.play(FadeIn(s, shift=RIGHT * 0.1), run_time=0.65)
-            self.wait(5)
-        self.wait(2.5)
+            self.wait(8)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 
@@ -609,7 +632,7 @@ class Scene09_CorrectnessAndComplexity(Scene):
     def construct(self):
         title = sec_title(r"Correctness \& Complexity")
         self.play(Write(title))
-        self.wait(1)
+        self.wait(5)
 
 
         checks = VGroup(
@@ -623,12 +646,12 @@ class Scene09_CorrectnessAndComplexity(Scene):
 
         for check in checks:
             self.play(FadeIn(check, shift=RIGHT * 0.12), run_time=0.6)
-            self.wait(2)
+            self.wait(2.5)
 
-        equiv = Tex(r"Subset Sum solution $\rightarrow$ CSP $\psi$ satisfiable",
+        equiv = Tex(r"CSP $\psi \rightarrow$ Subset Sum",
                     font_size=25, color=C_GOLD).shift(UP * 0.3)
         self.play(Write(equiv))
-        self.wait(0.4)
+        self.wait(3)
 
         comp_box = RoundedRectangle(width=9.5, height=3.5, corner_radius=0.2,
                                     stroke_color=C_ACCENT, fill_color=C_ACCENT,
@@ -640,7 +663,7 @@ class Scene09_CorrectnessAndComplexity(Scene):
 
         
         comp_lines = VGroup(
-            MathTex(r"\log T = O(\log n)+(n+m)+n(\log B+\log\lambda+O(1))",
+            MathTex(r"\log T = O(\log \hat n)+(\hat n+\hat m)+\hat n(\log B+\log\lambda+O(1))",
                     font_size=19),
             MathTex(r"\leq (1+2\varepsilon)\,n \text{ bits}", font_size=21, color=C_GREEN),
             MathTex(r"\#\text{Variable items} = \hat{n}\cdot 2^a \leq n\cdot 2^a",
@@ -656,9 +679,16 @@ class Scene09_CorrectnessAndComplexity(Scene):
 
         for line in comp_lines:
             self.play(FadeIn(line, shift=RIGHT * 0.08), run_time=0.45)
-            self.wait(2)
+            self.wait(5)
+
         
-        self.wait(3)
+        
+        self.wait(5)
+
+        equiv2 = Tex(r"K-SAT $\rightarrow$ Subset Sum",
+                    font_size=25, color=C_GOLD).shift(UP * 0.3)
+        self.play(Transform(equiv, equiv2))
+        self.wait(12)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.4)
 
 

@@ -1,7 +1,7 @@
 STRUCTURED CSP RECAP 
 --------------------------------------------------
 Scene: mainly text
-Structured CSP Instance ψ
+CSP Structure of Instance ψ
 
 # Variables: n̂ = ⌈n / a⌉  
 Variable Domain: [2ᵃ]  
@@ -12,10 +12,11 @@ Properties:
 • Each constraint contains ≤ ĉₖ,ε · a variables  
 
 Voiceover:
-Before reducing to Subset Sum, recall the structured CSP produced from k-SAT.
+Before reducing to Subset Sum, let's recall the structure of a CSP instance produced from k-SAT.
 
 Each CSP variable no longer represents a single Boolean variable.  
-Instead, each variable represents a **block of a original SAT variables**, giving it 2ᵃ possible values.
+Instead, each variable represents a **block of original k-SAT variables**, giving each CSP 
+variable 2ᵃ possible values.
 
 The sparsification and grouping lemmas guarantee strong structure:
 
@@ -43,9 +44,10 @@ Goal:
 Subset sums to T <-> CSP is satisfiable
 
 Voiceover:
-We'll focus on a single CSP instance v.
+We'll focus on a single instance of CSP
 
-Remember that only one CSP instance among the ones created in the previous step needs to be satisfiable for k-SAT to be satisfiable.
+The paper shows that only one CSP instance 
+among the ones created in the previous step needs to be satisfiable for k-SAT to be satisfiable.
 
 So we'll independently convert each CSP into a Subset Sum instance and
 
@@ -101,7 +103,7 @@ after the voice over show the empty blocks one by one:
 ___|_____|_____|_____   
 
 Voiceover:
-It wouldn't make sense for two x_i assignments to be chosen or two c1 
+It wouldn't make sense for two x_1 assignments to be chosen or two c1 
 constraint assignments to be chosen at the same time. 
 
 Therefore, we need to make sure that any correct solution 
@@ -152,7 +154,8 @@ T -> n + m|0|_____|_____ (set block two to all 1s)
 Voiceover:
 The third block contains n + m bits. Each position in this block corresponds to a variable or clause type. 
 An input integer would only have 1 1-bit in this block; 
-an integer of type variable x1 for example will have a 1 in the x1 position and 0s in all other positions
+
+For example, an integer of type variable x1 will have a 1 in the x1 position and 0s in all other positions
 The target number will have all 1s in this block to ensure only 1 assignment for each variable and clause
 
 
@@ -209,8 +212,10 @@ Q - d(x)*alpha where d(x) is the number of constraints that contain the variable
 and alpha is the value that the variable was assigned.
 
 If it's a constraint item that uses the variable, then we'll set the block to be 
-the value that it sets the variable as alpha_i. If the constraint doesn't use the variable,
+the value that the constraint assignment sets the variable which is alpha_i. If the constraint doesn't use the variable,
 then the block will be 0.
+
+We'll have the following sum within T.
 
 CONSISTENCY 
 --------------------------------------------------
@@ -233,16 +238,16 @@ Q - d(x)*f(alpha) + sum from i=1 to d(x) f(alpha_i) = Q
  d(x)*f(alpha) = sum from i=1 to d(x) f(alpha_i) 
 
 Voiceover:
-The sum of a set of chosen items would be Q - d(x)*alpha + sum from i=1 to d(x) alpha_i.
+Again, the sum of a set of chosen items would be as follows.
+
 For the value to match up with the target block, d(x)*alpha would need to equal 
-sum from i=1 to d(x) alpha_i. However, this equality could be achieved with values alpha_i 
+the summation of alpha_i. However, this equality could be achieved with values alpha_i 
 that are not equal to the variable's alpha.
 
 This is why the paper introduces k-average-free sets. 
-A k-average-free set S guarantees that the average of a selection of k numbers 
-from S is not present in S. And that the sum of k values in S can only equal 
-a multiple of another value in S if all of the values chosen from S are equal.
 
+A set S is k-average-free if no k elements of S have 
+an average also in S, unless all k values are equal.
 
 
 We can map our assignment values to an average-free set. 
@@ -273,29 +278,6 @@ lambda = max possible d(x)
 
 Q = lambdaB
 
-Voiceover:
-Lemma 3.2 in the paper states that a lamda-average-free set S of size 2^a,
- values in f(alpha) will be bounded between [0, lambda^{c/e}{2^a}^{1 + e}]
-in poly(n) time.
-
-Let's have B be the max value in the set S.
-We need the variable block at any point in addition to be non-negative; however variable
-items involves subtraction terms. We need Q to be equal to the max value possible of 
-d(x)*f(alpha). 
-
-We know that the maximum value possible for d(x) is lambda and the max value possible 
-for f(alpha) is B.
-
-Therefore the max possible value of d(x)*f(alpha) is lambda B.
-So each variable block in T will be lambdaB.
-
-This avoids negative values.
-
-
-VARIABLE BLOCK size
---------------------------------------------------
-Scene:
-
 Addition term:
 sum from i=1 to d(x) f(alpha_i)
 
@@ -309,12 +291,33 @@ range: [0, 2lambdaB]
 block size: ceil(log(2lambdaB + 1))
 
 Voiceover:
+Lemma 3.2 in the paper states that a lamda-average-free set S of size 2^a,
+will be bounded between [0, and this value that we'll call B.
+This set can be constructed in poly(n) time.
+
+
+We need the variable block at any point in addition to be non-negative; however variable
+items involves the subtraction term d(x)*f(alpha). We need Q to be equal to the max value possible of 
+d(x)*f(alpha). 
+
+We know that the maximum value possible for d(x) is lambda and the max value possible 
+for f(alpha) is B.
+
+Therefore the max possible value of d(x)*f(alpha) is lambda B.
+So each variable block in T will be lambdaB.
+
+This avoids negative values.
+
+
+
 Now, what should each variable block's size be.
 
 Well with the addition terms throughout constraint items, our max value possible within a 
-variable block would be ... (let the equations play through) 2lambdaB.
+variable block would be 2lambdaB.
 
-To represent the range [0,2lambdaB], each variable block needs to be of size ceil(log(2lambdaB + 1))
+So that would make the range of each variable block: [0, 2lambdaB].
+
+To represent the range [0,2lambdaB], each variable block needs to be of the following size.
 
 With these variable blocks, we'll be able to check consistency of an assignment 
 for each variable without worrying about overflowing into other blocks.
@@ -348,7 +351,7 @@ Time complexity:
     
 
 Voiceover:
-As a sanity check lets run through a checklist.
+Lets run through a checklist to verify.
 
 A subset sum solver would work on CSP iff:
 
@@ -358,15 +361,21 @@ and all choices agree globally.
 
 Thus we obtain an equivalent Subset Sum instance.
 
-Each integer has O(logn) + n + m + n*(logB + loglambda + O(1)) bits, which can be simplified to 
-    .... and has an upper bound of (1+2e)n
+Now, let's look at time complexity.
+Each integer has the following bits,....
+ which has an upper bound of (1+2e)n
     
 There are n variables and 2^a possible assignments:
         n*2^a
 There are m constraints and at most lambda variables present in each:
     mhat*2^{alambda} which has an upperbound of n*2^{alambda} 
 
-Therefore this reduction from CSP to Subset Sum:
-... which can be reduced to poly(n) 2^{en}
+Therefore this reduction from CSP to Subset Sum across all 2^{en} CSP instances
+has a poly(n) 2^{en} runtime
+
+With K-SAT to CSP having the same reduction time, this means that 
+K-SAT to Subset sum reduction runs in poly(n) 2^{en}.
+
+Thank you for watching!
 
 --------------------------------------------------
