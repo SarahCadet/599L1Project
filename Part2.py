@@ -1,14 +1,10 @@
 """
 CSP → Subset Sum Reduction — Manim Animation
-=============================================
-Tested on Manim Community v0.20.x
 
-Render the full video:
-    manim -pql Part2.py CSPToSubsetSum   # fast preview (480p)
-    manim -pqh Part2.py CSPToSubsetSum   # high quality (1080p)
+Render scenes:
+    manim -pql Part2.py [Scene]   # fast preview (480p)
+    manim -pqh Part2.py [Scene]   # high quality (1080p)
 
-Render a single section on its own, e.g.:
-    manim -pql csp_to_subset_sum.py Scene03_ItemTypes
 """
 
 from manim import *
